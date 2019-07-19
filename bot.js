@@ -45,7 +45,7 @@ bot.on('messageReactionAdd', (messageReaction, user) =>{
 	if(member)
 	{
 		if(roleName === 'Verified'){
-			member.addRole(role.id)
+			member.removeRole(role.id)
 			console.log("Success.")
 		}
 	}
