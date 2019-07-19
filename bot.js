@@ -154,7 +154,7 @@ bot.on('message', msg=>{
 			if(!achannel) return;
 			msg.channel.bulkDelete(1);
 			achannel.sendMessage('@everyone \n \n' + aMessage + '\n \n' + 'Announcement made by ' + aAuthor + '.')
-			achannel.sendMessage(agif)
+			//achannel.sendMessage(agif)
 		break;
 		case '-kick':
 			if(!args[1]) return msg.channel.sendMessage('Please specify a user!')
