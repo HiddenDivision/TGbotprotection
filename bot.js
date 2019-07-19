@@ -7,39 +7,68 @@ const testpre = '-';
 
 bot.on('ready', () =>{
 	console.log('Hidden division is now hidden.');
-	bot.user.setActivity('you.', { type: ('WATCHING')})
+	bot.user.setActivity('you having a trip.', { type: ('WATCHING')})
+	var Channel = bot.channels.get("601886129121263666");
+	Channel.fetchMessage("601887478684581944");
+	bot.user.setActivity('you getting killed.', { type: ('WATCHING')})
+})
+
+bot.on('raw', event =>{
+	const eventname = event.t
+	if(eventname === 'MESSAGE_REACTION_ADD')
+	{
+		var reactionChannel = bot.channels.get(event.d.channel_id);
+		if(event.d.message_id === '601887478684581944')
+		{
+			reactionChannel.fetchMessage(event.d.message_id)
+			.then(msg => {
+			var msgReaction = msg.reactions.get(event.d.emoji.name + ":" + event.d.emoji.id);
+			var user = bot.users.get(event.d.user_id)
+			})
+			.catch(err => console.log(err))
+		}
+		else {
+			reactionChannel.fetchMessage(event.d.message_id)
+			.then(msg => {
+			var msgReaction = msg.reactions.get(event.d.emoji.name + ":" + event.d.emoji.id);
+			var user = bot.users.get(event.d.user_id)
+			})
+			.catch(err => console.log(err))
+		}
+	}
+});
+
+bot.on('messageReactionAdd', (messageReaction, user) =>{
+	var roleName = messageReaction.emoji.name
+	var role = messageReaction.message.guild.roles.find(role => role.name.toLowerCase() === roleName.toLowerCase());
+	console.log(roleName)
+	var member = messageReaction.message.guild.members.find(member => member.id === user.id);
+	if(member)
+	{
+		if(roleName === 'Verified'){
+			member.addRole('Unverified'.id)
+			console.log("Success.")
+		}
+	}
 })
 
 bot.on('guildMemberAdd', member =>{
 
-	const channel = member.guild.channels.find(channel => channel.name === "wɇƚ¢¤₥ɇ");
+	const channel = member.guild.channels.find(channel => channel.name === "welcome");
 	if(!channel) return;
-	let role = member.guild.roles.find("name", "Hidden user.");
+	let role = member.guild.roles.find("name", "Unverified");
 	member.addRole(role.id);
-	channel.sendMessage(`Welcome in Ɦıᴅᴅᴇɴ Ðıᴠısıᴏɴ Ᵽᴜʙʟıᴄ. Be sure you are hidden over here, ${member}.`);
+	channel.sendMessage(`Welcome in Trip Gang! Have a nice trip, ${member}.`);
 })
 
 bot.on('guildMemberRemove', member =>{
 
-	const channel = member.guild.channels.find(channel => channel.name === "wɇƚ¢¤₥ɇ");
+	const channel = member.guild.channels.find(channel => channel.name === "welcome");
 	if(!channel) return;
-	channel.sendMessage(`I guess ${member} wasn't hidden to stay here...`)
+	channel.sendMessage(`Your trip is over, ${member}.`)
 })
 
 bot.on('message', msg=>{
-	if(msg.content === "I'm hidden."){
-		msg.reply('Ｓｔａｙ  ｈｉｄｄｅｎ  ｔｈｅｎ．');
-	}
-	if(msg.content === "I'm not hidden."){
-		msg.reply('Why are you still here then?');
-	}
-	if(msg.content === "-test"){
-		msg.channel.sendMessage('This is a test.');
-	}
-	if(msg.content === "-hidden gif"){
-		const gif = new Attachment('https://media.discordapp.net/attachments/572096391149649920/572508265506668556/Hidden_Division.gif');
-		msg.channel.sendMessage(gif);
-	}
 	if(msg.content === "-meme"){
 		const randomPuppy = require('random-puppy');
 		const snekfetch = require('snekfetch');
@@ -70,34 +99,14 @@ bot.on('message', msg=>{
 			});
 		});
 	}
-	if(msg.content === "-gang info"){
-		const gembed = new RichEmbed()
-		.setTitle('Ɦıᴅᴅᴇɴ Ðıᴠısıᴏɴ infos :')
-		.addField('Members', "16 Official members.")
-		.addField('Allies', "𝔅𝔬𝔯𝔫 𝔎𝔦𝔩𝔩𝔢𝔯𝔰(ℭ𝔲𝔯𝔰𝔵𝔡𝔟𝔞𝔢 / Fridy)\nSpanzer Gang (Spanzer)\nFile Drop Zone (ShadowWovle)\nΩmega Gang (Ashlee | Ωmega)\n𝕸𝖊𝖓𝖆𝖈𝖊 (Loren / Vitriolic / Sache)\nTrip Gang (cyb3r)\nKFC Gang (Frostbite / ℭ𝔲𝔯𝔰𝔵𝔡𝔟𝔞𝔢)")
-		.setColor(0x160033);
-		msg.channel.sendEmbed(gembed);
-	}
-	if(msg.content === "-allies"){
-		msg.author.sendMessage("𝔅𝔬𝔯𝔫 𝔎𝔦𝔩𝔩𝔢𝔯𝔰: https://discord.gg/Bb9s5hm\nKFC Gang: https://discord.gg/bw7NXMn\nΩmega Gang: https://discord.gg/SkxaYs6\nFile Drop Zone: https://discord.gg/ywd2Pkm\n𝕸𝖊𝖓𝖆𝖈𝖊 : https://discord.gg/NrQACSt\nTrip Gang : https://discord.gg/EdUhmV2");
-		msg.channel.sendMessage("Allies invite links has been sent to you in your DM's");
-	}
 	if(msg.content === "-help"){
 		const embed = new RichEmbed()
 		.setTitle('Available Commands :')
-		.addField('General commands', "'-help' : Shows you all available commands.\n'-gang info' : Shows you all information of Ɦıᴅᴅᴇɴ Ðıᴠısıᴏɴ.\n'-allies' : Sends you all allies invite links in your DM's.\n'kick' (With the hidden prefix) : Kicks a specific user from the server.\n'ban' (With the hidden prefix) : Ban a specific user from the server.\n'unban' (With the hidden prefix) : Unban a specific user from the server (Only with the discord ID).\n'purge' (With the hidden prefix) : Pruge a specific amount of messages on the channel.\n'announcement' (With the hidden prefix) : Make a public announcement to the server.")
-		.addField('Entertainment commands', "'-test' : Just a test.\n'-meme' : Sends memes.\n'-OwO' : Makes any text in OwO.\n'-hidden gif' : Ɦıᴅᴅᴇɴ Ðıᴠısıᴏɴ is here to spread the truth. \n 'Pwease send Spanzer's thighs.' (Without the prefix) : Send's Spanzer's thighs.\n'ah.mp4' (Without the prefix) : Ah! (earrape).\n'I'm hidden.' (Without the prefix) : Of course you better be hidden.\n'I'm not hidden.' (Without the prefix) : Please don't say that.")
-		.addField('Current normal prefix', "'-' : It's the current prefix.\nThe hidden prefix is secret and kept away from others for more security.")
+		.addField('General commands', "'-help' : Shows you all available commands.\n'-kick' : Kicks a specific user from the server.\n'-ban' : Ban a specific user from the server.\n'-unban' : Unban a specific user from the server (Only with the discord ID).\n'-purge' -: Pruge a specific amount of messages on the channel.\n'-announcement' : Make a public announcement to the server.")
+		.addField('Entertainment commands', "'-meme' : Sends memes.\n'-OwO' : Makes any text in OwO.")
+		.addField('Current normal prefix', "'-' : It's the current prefix.")
 		.setColor(0x160033)
 		msg.channel.sendEmbed(embed);
-	}
-	if(msg.content === "Pwease send Spanzer's thighs."){
-		const attachement = new Attachment('https://cdn.discordapp.com/attachments/574629212258959387/594448748256428042/JPEG_20190510_205536.jpg');
-		msg.channel.sendMessage(attachement);
-	}
-	if(msg.content === "ah.mp4"){
-		const attachement = new Attachment('https://cdn.discordapp.com/attachments/545281417571991572/595472395159076890/ah.mp4');
-		msg.channel.sendMessage(attachement);
 	}
 	let args2 = msg.content.substring(testpre.length - 1).split(" ");
 	switch(args2[0]){
@@ -117,7 +126,7 @@ bot.on('message', msg=>{
 	}
 	let args = msg.content.substring(PREFIX.length - 1).split(" ");
 	switch(args[0]){
-		case '​purge':
+		case '-purge':
 			const command = args.join(" ");
 			if(command.includes('-')) return;
 			if(!msg.member.hasPermission("MANAGE_MESSAGES")) return msg.channel.sendMessage("You don't have the permission to purge messages!");
@@ -125,7 +134,7 @@ bot.on('message', msg=>{
 			if(!args[1]) return msg.channel.sendMessage('Please specify a number of messages to be purged!');
 			msg.channel.bulkDelete(args[1]);
 		break;
-		case '​iregards':
+		case '-iregards':
 			mention = msg.mentions.users.first();
 			if(!msg.member.roles.find(r => r.name === "Leader")) return msg.channel.sendMessage("You are not the leader. You can't do that.");
 			if(!msg.author.id === '333357946744602647') return msg.channel.sendMessage("You are not the leader. You can't do that.");
@@ -135,7 +144,7 @@ bot.on('message', msg=>{
 			mention.sendMessage(regard);
 			msg.channel.bulkDelete(1);
 		break;
-		case '​announcement':
+		case '-announcement':
 			if(!args[1]) return msg.channel.sendMessage('What are you trying to announce?')
 			if(!msg.member.hasPermission("ADMINISTRATOR")) return msg.channel.sendMessage("You don't have the permission to make an announcement!");
 			if(!msg.guild.me.hasPermission("ADMINISTRATOR")) return msg.channel.sendMessage("I don't have the allowed permission to make an announcement!");
@@ -148,7 +157,7 @@ bot.on('message', msg=>{
 			achannel.sendMessage('@everyone \n \n' + aMessage + '\n \n' + 'Announcement made by ' + aAuthor + '.')
 			achannel.sendMessage(agif)
 		break;
-		case '​kick':
+		case '-kick':
 			if(!args[1]) return msg.channel.sendMessage('Please specify a user!')
 			const tuser = msg.mentions.users.first();
 			const kreason = args.join(" ").slice(28);
@@ -178,7 +187,7 @@ bot.on('message', msg=>{
 				}
 			}
 		break;
-		case '​ban':
+		case '-ban':
 			if(!args[1]) return msg.channel.sendMessage('Please specify a user!')
 			const user = msg.mentions.users.first();
 			const breason = args.join(" ").slice(27);
@@ -208,7 +217,7 @@ bot.on('message', msg=>{
 				}
 			}
 		break;
-		case '​unban':
+		case '-unban':
 			if(!args[1]) return msg.channel.sendMessage('Please specify a user ID!')
 			if(!msg.member.hasPermission("BAN_MEMBERS")) return msg.channel.sendMessage("You don't have the permission to unban someone!");
 			if(!msg.guild.me.hasPermission("BAN_MEMBERS")) return msg.channel.sendMessage("I don't have the allowed permission to unban someone!");
