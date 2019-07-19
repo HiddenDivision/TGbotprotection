@@ -39,13 +39,13 @@ bot.on('raw', event =>{
 
 bot.on('messageReactionAdd', (messageReaction, user) =>{
 	var roleName = messageReaction.emoji.name
-	var role = messageReaction.message.guild.roles.find(role => role.name.toLowerCase() === roleName.toLowerCase());
+	var role = messageReaction.message.guild.roles.find("name", "Unverified");
 	console.log(roleName)
 	var member = messageReaction.message.guild.members.find(member => member.id === user.id);
 	if(member)
 	{
 		if(roleName === 'Verified'){
-			member.addRole('Unverified'.id)
+			member.addRole(role.id)
 			console.log("Success.")
 		}
 	}
