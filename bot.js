@@ -8,8 +8,8 @@ const testpre = '-';
 bot.on('ready', () =>{
 	console.log('Hidden division is now hidden.');
 	bot.user.setActivity('you having a trip.', { type: ('WATCHING')})
-	var Channel = bot.channels.get("601886129121263666");
-	Channel.fetchMessage("601887478684581944");
+	var Channel = bot.channels.get("601880042653483018");
+	Channel.fetchMessage("601884630270083092");
 })
 
 bot.on('raw', event =>{
@@ -17,7 +17,7 @@ bot.on('raw', event =>{
 	if(eventname === 'MESSAGE_REACTION_ADD')
 	{
 		var reactionChannel = bot.channels.get(event.d.channel_id);
-		if(event.d.message_id === '601887478684581944')
+		if(event.d.message_id === '601884630270083092')
 		{
 			reactionChannel.fetchMessage(event.d.message_id)
 			.then(msg => {
