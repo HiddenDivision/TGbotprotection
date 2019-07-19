@@ -10,7 +10,6 @@ bot.on('ready', () =>{
 	bot.user.setActivity('you having a trip.', { type: ('WATCHING')})
 	var Channel = bot.channels.get("601886129121263666");
 	Channel.fetchMessage("601887478684581944");
-	bot.user.setActivity('you getting killed.', { type: ('WATCHING')})
 })
 
 bot.on('raw', event =>{
